@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
         Toast.makeText(this, "Its ok", Toast.LENGTH_LONG);
-        Text();
+        Start();
     }
 
     public void Text(){
