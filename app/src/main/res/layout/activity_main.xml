@@ -16,13 +16,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
     </androidx.core.widget.NestedScrollView>
 
     <EditText
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:id="@+id/ed"
         app:layout_constraintBottom_toBottomOf="@id/parent"
         app:layout_constraintLeft_toLeftOf="@id/parent"

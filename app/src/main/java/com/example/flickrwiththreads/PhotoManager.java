@@ -41,14 +41,12 @@ public class PhotoManager {
         this.search = search;
         this.con = con;
         this.context = context;
-        System.out.println("Manager clasas  " + h == null);
         this.h = h;
     }
 
     public void GetPL(){
-        final Drawable[] draws = new Drawable[21];
-        final Bitmap[] pic = new Bitmap[21];
-        final Photo[] photo = new Photo[22];
+        final int count = 40;
+        final Bitmap[] pic = new Bitmap[count];
         ExecutorService ser = Executors.newSingleThreadExecutor();
         ser.submit(new Runnable() {
             @Override
@@ -66,7 +64,7 @@ public class PhotoManager {
                 SearchParameters params = new SearchParameters();
                 params.setText(search);
                 try {
-                    pl = f.getPhotosInterface().search(params, 22, 1);
+                    pl = f.getPhotosInterface().search(params, count, 1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (FlickrException e) {
@@ -75,8 +73,8 @@ public class PhotoManager {
                     e.printStackTrace();
                 }
                 for(int i = 0; i  < pl.size(); i++){
-                    String link = pl.get(i).getLargeUrl();
-                    InputStream is = null;
+                        String link = pl.get(i).getLargeUrl();
+                        InputStream is = null;
                     try {
                         is = (InputStream) new URL(link).getContent();
                     } catch (MalformedURLException e) {
@@ -85,29 +83,20 @@ public class PhotoManager {
                         e.printStackTrace();
                     }
                     pic[i] = BitmapFactory.decodeStream(is);
-                    System.out.println("map #" + i+ " was added");
-                    System.out.println(pic[i]);
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-        int counter = 0;
-        System.out.println("PhotoManager");
-        System.out.println(h == null);
         UIGeneration ui = new UIGeneration(context, con, h);
         for(int i = 0; i < pic.length; i++){
             while(pic[i] == null){
-
             }
             ui.CreateView(pic[i]);
-            System.out.println("map was sent");
         }
-       /* try {
-            uiThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return pic;*/
     }
 
 }

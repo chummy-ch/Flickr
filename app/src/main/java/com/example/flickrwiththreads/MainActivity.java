@@ -68,23 +68,17 @@ public class MainActivity extends AppCompatActivity {
                 ConstraintSet set = new ConstraintSet();
                 set.clone(con);
                 if (view.getId() == 0) {
-                    System.out.println("if id == 0");
                     set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP, 10);
                     set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
                 } else {
-                    System.out.println("if id != 0");
                     if((int) view.getId() % 2 == 0){
-                        System.out.println((int)view.getId() % 2);
                         ImageView v = (ImageView) con.getChildAt((int)view.getId() - 2);
-                        System.out.println("if id % 2 == 0");
                         int id = (int) view.getId() - 2;
                         set.connect(view.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, 10);
                         set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
                     }
                     else if((int) view.getId() % 2 != 0){
-                        System.out.println((int)view.getId() % 2);
                         ImageView v = (ImageView) con.getChildAt((int) view.getId() - 1);
-                        System.out.println("if id % 2 != 0");
                         set.connect(view.getId(), ConstraintSet.LEFT, v.getId(), ConstraintSet.RIGHT, 10);
                         if((int) view.getId() != 1){
                             int id = (int) view.getId() - 2;
