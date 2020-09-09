@@ -24,7 +24,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/ed"
-        app:layout_constraintTop_toBottomOf="@id/scroll"
+        app:layout_constraintBottom_toBottomOf="@id/parent"
         app:layout_constraintLeft_toLeftOf="@id/parent"
         app:layout_constraintRight_toRightOf="@id/parent"/>
     <Button
@@ -32,6 +32,6 @@
         android:layout_height="50dp"
         android:id="@+id/find"
         app:layout_constraintLeft_toRightOf="@id/ed"
-        app:layout_constraintTop_toBottomOf="@id/scroll"/>
+        app:layout_constraintBottom_toBottomOf="@id/parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

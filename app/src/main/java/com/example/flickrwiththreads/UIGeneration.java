@@ -34,29 +34,22 @@ public class UIGeneration {
         this.con = con;
         this.h = h;
         this.context = context;
-        System.out.println("UI");
-        System.out.println(h == null);
     }
 
     public void CreateView(Bitmap map) {
-        System.out.println(h == null);
         final Bitmap bMap = map;
         ExecutorService ser = Executors.newSingleThreadExecutor();
         ser.submit(new Runnable() {
             @Override
             public void run() {
-                if (Looper.myLooper() == Looper.getMainLooper()) System.out.println("Main");
                 WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
                 final Display display = wm.getDefaultDisplay();
                 ImageView view = new ImageView(context);
                 view.setId(con.getChildCount());
                 view.setImageBitmap(bMap);
                 view.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight() / 5));
-                System.out.println("Sending to handler");
                 Message msg = h.obtainMessage(view.getId(), view);
                 h.sendMessage(msg);
-
-                System.out.println("view was created " + view.getId());
             }
         });
     }
