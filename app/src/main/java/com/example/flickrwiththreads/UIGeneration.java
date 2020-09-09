@@ -47,14 +47,18 @@ public class UIGeneration {
                 ImageView view = new ImageView(context);
                 view.setId(con.getChildCount());
                 view.setImageBitmap(bMap);
-                view.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight() / 5));
+                view.setBackgroundResource(R.drawable.round_view);
+                view.setAdjustViewBounds(true);
+                view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                view.setClipToOutline(true);
+                view.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth() / 2 - 20, display.getHeight() / 5));
                 Message msg = h.obtainMessage(view.getId(), view);
                 h.sendMessage(msg);
             }
         });
     }
 
-    public void CreateViews() {
+    /*public void CreateViews() {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         final Display display = wm.getDefaultDisplay();
         for(int i = 0; i < draws.length; i++){
@@ -74,5 +78,5 @@ public class UIGeneration {
             }
             set.applyTo(con);
         }
-    }
+    }*/
 }

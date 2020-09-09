@@ -73,16 +73,24 @@ public class MainActivity extends AppCompatActivity {
                     set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
                 } else {
                     System.out.println("if id != 0");
-                    ImageView v = (ImageView) con.getChildAt((int)view.getId() - 1);
                     if((int) view.getId() % 2 == 0){
+                        System.out.println((int)view.getId() % 2);
+                        ImageView v = (ImageView) con.getChildAt((int)view.getId() - 2);
                         System.out.println("if id % 2 == 0");
                         int id = (int) view.getId() - 2;
                         set.connect(view.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, 10);
                         set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
                     }
-                    else{
+                    else if((int) view.getId() % 2 != 0){
+                        System.out.println((int)view.getId() % 2);
+                        ImageView v = (ImageView) con.getChildAt((int) view.getId() - 1);
                         System.out.println("if id % 2 != 0");
                         set.connect(view.getId(), ConstraintSet.LEFT, v.getId(), ConstraintSet.RIGHT, 10);
+                        if((int) view.getId() != 1){
+                            int id = (int) view.getId() - 2;
+                            set.connect(view.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, 10);
+                        }
+                        else set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP,10);
                     }
                 }
                 set.applyTo(con);
@@ -110,12 +118,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         find.setOnClickListener(get);
-        /*getWindow().getDecorView().post(new Runnable() {
-            @Override
-            public void run() {
-                Start();
-            }
-        });*/
     }
 
     public void UIOptimization(){
@@ -131,13 +133,9 @@ public class MainActivity extends AppCompatActivity {
         set.connect(field.getId(), ConstraintSet.LEFT, parent.getId(), ConstraintSet.LEFT);
         set.connect(field.getId(), ConstraintSet.RIGHT, parent.getId(), ConstraintSet.RIGHT);
         set.applyTo(parent);
-        /*parent.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight()));*/
-        /*con.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight() * 85 / 100));*/
-        /*find.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth() * 10 / 100, display.getHeight() * 5 / 100));*/
     }
 
     public void Start(){
-        System.out.println(h == null);
         PhotoManager manager = new PhotoManager(this, con, field.getText().toString(), h);
         manager.GetPL();
     }
