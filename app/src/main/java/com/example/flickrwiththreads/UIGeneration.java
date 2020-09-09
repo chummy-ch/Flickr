@@ -17,22 +17,24 @@ import java.util.concurrent.Executors;
 
 
 public class UIGeneration {
-    public Bitmap[] draws;
+    /*public Bitmap[] draws;*/
     public Context context;
     public ConstraintLayout con;
     public Handler h;
 
-    UIGeneration(Bitmap[] draws, Context context, ConstraintLayout con, Handler h){
+   /* UIGeneration(Bitmap[] draws, Context context, ConstraintLayout con){
         this.draws = draws;
         this.context = context;
         this.con = con;
-        this.h = h;
+        UIThreadHelper uihelper = new UIThreadHelper(con);
+        this.h = uihelper.getHandler();
 
-    }
+    }*/
 
-    UIGeneration(Context context, ConstraintLayout con, Handler h){
+    UIGeneration(Context context, ConstraintLayout con){
         this.con = con;
-        this.h = h;
+        UIThreadHelper uihelper = new UIThreadHelper(con);
+        this.h = uihelper.getHandler();
         this.context = context;
     }
 

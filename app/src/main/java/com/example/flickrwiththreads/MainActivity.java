@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     public NestedScrollView scroll;
     public EditText field;
     public Button find;
-    public static MyHelper hepler = new MyHelper();
-    public Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,38 +57,9 @@ public class MainActivity extends AppCompatActivity {
         find = findViewById(R.id.find);
         field = findViewById(R.id.ed);
         scroll = findViewById(R.id.scroll);
+
         UIOptimization();
-        h = new Handler(Looper.getMainLooper()){
-            @Override
-            public void handleMessage(Message msg){
-                ImageView view = (ImageView) msg.obj;
-                con.addView(view);
-                ConstraintSet set = new ConstraintSet();
-                set.clone(con);
-                if (view.getId() == 0) {
-                    set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP, 10);
-                    set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
-                } else {
-                    if((int) view.getId() % 2 == 0){
-                        ImageView v = (ImageView) con.getChildAt((int)view.getId() - 2);
-                        int id = (int) view.getId() - 2;
-                        set.connect(view.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, 10);
-                        set.connect(view.getId(), ConstraintSet.LEFT, con.getId(), ConstraintSet.LEFT, 10);
-                    }
-                    else if((int) view.getId() % 2 != 0){
-                        ImageView v = (ImageView) con.getChildAt((int) view.getId() - 1);
-                        set.connect(view.getId(), ConstraintSet.LEFT, v.getId(), ConstraintSet.RIGHT, 10);
-                        if((int) view.getId() != 1){
-                            int id = (int) view.getId() - 2;
-                            set.connect(view.getId(), ConstraintSet.TOP, id, ConstraintSet.BOTTOM, 10);
-                        }
-                        else set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP,10);
-                    }
-                }
-                set.applyTo(con);
-            }
-        };
-        getSupportActionBar().hide();
+
         View.OnClickListener get = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UIOptimization(){
+        getSupportActionBar().hide();
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         final Display display = wm.getDefaultDisplay();
         scroll.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, display.getHeight() * 9980 / 10000 ));
@@ -130,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Start(){
-        PhotoManager manager = new PhotoManager(this, con, field.getText().toString(), h);
+        PhotoManager manager = new PhotoManager(this, con, field.getText().toString());
         manager.GetPL();
     }
 }

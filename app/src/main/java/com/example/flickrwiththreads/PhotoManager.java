@@ -35,13 +35,11 @@ public class PhotoManager {
     private Callable<Bitmap[]> ret;
     public Context context;
     public ConstraintLayout con;
-    public Handler h;
 
-    PhotoManager(Context context, ConstraintLayout con, String search, Handler h){
+    PhotoManager(Context context, ConstraintLayout con, String search){
         this.search = search;
         this.con = con;
         this.context = context;
-        this.h = h;
     }
 
     public void GetPL(){
@@ -91,7 +89,7 @@ public class PhotoManager {
                 }
             }
         });
-        UIGeneration ui = new UIGeneration(context, con, h);
+        UIGeneration ui = new UIGeneration(context, con);
         for(int i = 0; i < pic.length; i++){
             while(pic[i] == null){
             }
