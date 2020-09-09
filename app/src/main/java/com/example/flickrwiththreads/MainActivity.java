@@ -12,6 +12,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public NestedScrollView scroll;
     public EditText field;
     public Button find;
-    public int[] color = new int[]{Color.GREEN, Color.YELLOW};
+    public static MyHelper hepler = new MyHelper();
+    public Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +53,33 @@ public class MainActivity extends AppCompatActivity {
         find = findViewById(R.id.find);
         field = findViewById(R.id.ed);
         scroll = findViewById(R.id.scroll);
-
+        h = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg){
+                System.out.println("HHAANNDDLLEERR " + msg.what);
+                ImageView view = (ImageView) msg.obj;
+                con.addView(view);
+                ConstraintSet set = new ConstraintSet();
+                set.clone(con);
+                if (con.getChildCount() == 1) {
+                    set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP);
+                } else {
+                    ImageView v = (ImageView) con.getChildAt(con.getChildCount() - 2);
+                    set.connect(view.getId(), ConstraintSet.TOP, v.getId(), ConstraintSet.BOTTOM);
+                }
+                set.applyTo(con);
+            }
+        };
         getSupportActionBar().hide();
-        Toast.makeText(this, "Its ok", Toast.LENGTH_LONG);
         View.OnClickListener get = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Start();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                       Start();
+                    }
+                }).start();
             }
         };
         find.setOnClickListener(get);
@@ -71,15 +95,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Start(){
-        PhotoManager manager = new PhotoManager(this, con, field.getText().toString());
+        System.out.println(h == null);
+        PhotoManager manager = new PhotoManager(this, con, field.getText().toString(), h);
         manager.GetPL();
-        System.out.println("draws are ready");
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        /*UIGeneration ui = new UIGeneration(drawable, this, con);
-        ui.CreateViews();*/
     }
 }

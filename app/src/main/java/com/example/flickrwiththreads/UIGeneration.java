@@ -1,59 +1,64 @@
 package com.example.flickrwiththreads;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.os.Looper;
-import android.provider.ContactsContract;
-import android.util.Size;
+import android.os.Message;
 import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import androidx.constraintlayout.solver.state.State;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import java.time.chrono.ThaiBuddhistEra;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class UIGeneration{
+
+public class UIGeneration {
     public Bitmap[] draws;
     public Context context;
     public ConstraintLayout con;
+    public Handler h;
 
-    UIGeneration(Bitmap[] draws, Context context, ConstraintLayout con){
+    UIGeneration(Bitmap[] draws, Context context, ConstraintLayout con, Handler h){
         this.draws = draws;
         this.context = context;
         this.con = con;
+        this.h = h;
+
     }
 
-    UIGeneration(Context context, ConstraintLayout con){
+    UIGeneration(Context context, ConstraintLayout con, Handler h){
         this.con = con;
+        this.h = h;
         this.context = context;
+        System.out.println("UI");
+        System.out.println(h == null);
     }
 
-    public void CreateView(Bitmap map){
-        if(Looper.myLooper() == Looper.getMainLooper()) System.out.println("Main");
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        final Display display = wm.getDefaultDisplay();
-            ImageView view = new ImageView(context);
-            view.setId(con.getChildCount());
-            view.setImageBitmap(map);
-            view.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight() / 5));
-            con.addView(view);
-            ConstraintSet set = new ConstraintSet();
-            set.clone(con);
-            if(con.getChildCount() == 1){
-                set.connect(view.getId(), ConstraintSet.TOP, con.getId(), ConstraintSet.TOP);
+    public void CreateView(Bitmap map) {
+        System.out.println(h == null);
+        final Bitmap bMap = map;
+        ExecutorService ser = Executors.newSingleThreadExecutor();
+        ser.submit(new Runnable() {
+            @Override
+            public void run() {
+                if (Looper.myLooper() == Looper.getMainLooper()) System.out.println("Main");
+                WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                final Display display = wm.getDefaultDisplay();
+                ImageView view = new ImageView(context);
+                view.setId(con.getChildCount());
+                view.setImageBitmap(bMap);
+                view.setLayoutParams(new ConstraintLayout.LayoutParams(display.getWidth(), display.getHeight() / 5));
+                System.out.println("Sending to handler");
+                Message msg = h.obtainMessage(view.getId(), view);
+                h.sendMessage(msg);
+
+                System.out.println("view was created " + view.getId());
             }
-            else {
-                ImageView v = (ImageView) con.getChildAt(con.getChildCount() - 2);
-                set.connect(view.getId(), ConstraintSet.TOP, v.getId(), ConstraintSet.BOTTOM);
-            set.applyTo(con);
-            System.out.println("view was created");
-        }
+        });
     }
 
     public void CreateViews() {

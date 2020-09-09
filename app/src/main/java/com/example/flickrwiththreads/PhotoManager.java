@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.Contacts;
 
@@ -34,11 +35,14 @@ public class PhotoManager {
     private Callable<Bitmap[]> ret;
     public Context context;
     public ConstraintLayout con;
+    public Handler h;
 
-    PhotoManager(Context context, ConstraintLayout con, String search){
+    PhotoManager(Context context, ConstraintLayout con, String search, Handler h){
         this.search = search;
         this.con = con;
         this.context = context;
+        System.out.println("Manager clasas  " + h == null);
+        this.h = h;
     }
 
     public void GetPL(){
@@ -87,7 +91,9 @@ public class PhotoManager {
             }
         });
         int counter = 0;
-        UIGeneration ui = new UIGeneration(context, con);
+        System.out.println("PhotoManager");
+        System.out.println(h == null);
+        UIGeneration ui = new UIGeneration(context, con, h);
         for(int i = 0; i < pic.length; i++){
             while(pic[i] == null){
 
